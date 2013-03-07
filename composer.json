@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe/dependentdropdownfield",
+	"name": "sheadawson/silverstripe-dependentdropdownfield",
 	"description": "A silverstripe dropdown field that has it's options populated via ajax, based on the value of the field it depends on",
 	"require": {
 		"php": ">=5.3.2",
