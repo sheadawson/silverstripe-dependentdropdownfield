@@ -3,7 +3,7 @@ jQuery.entwine("dependentdropdown", function($) {
 	$(":input.dependent-dropdown").entwine({
 		onmatch: function() {
 			var drop = this;
-			var depends = ($(":input[name=" + drop.data('depends') + "]"));
+			var depends = ($(":input[name=" + drop.data('depends').replace(/[#;&,.+*~':"!^$[\]()=>|\/]/g, "\\$&") + "]"));
 
 			this.parents('.field:first').addClass('dropdown');
 
