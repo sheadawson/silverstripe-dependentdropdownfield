@@ -62,7 +62,7 @@ class DependentDropdownField extends DropdownField {
 	public function Field($properties = array()) {
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
-		Requirements::javascript('dependentdropdownfield/javascript/dependentdropdownfield.js');
+		Requirements::javascript(DEPENDENTDROPDOWNFIELD . '/javascript/dependentdropdownfield.js');
 
 		$this->addExtraClass('dependent-dropdown');
 		$this->addExtraClass('dropdown');
