@@ -7,7 +7,7 @@
  */
 class DependentDropdownField extends DropdownField {
 
-	public static $allowed_actions = array(
+	private static $allowed_actions = array(
 		'load'
 	);
 
