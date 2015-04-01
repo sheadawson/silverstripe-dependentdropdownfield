@@ -20,8 +20,8 @@ jQuery.entwine("dependentdropdown", function($) {
 							drop.append($("<option />").val("").text(drop.data('empty')))
 						}
 
-						$.each(data, function(k, v) {
-							drop.append($("<option />").val(k).text(v))
+						$.each(data, function() {
+							drop.append($("<option />").val(this.k).text(this.v))
 						});
 						drop.trigger("liszt:updated");
 					});
