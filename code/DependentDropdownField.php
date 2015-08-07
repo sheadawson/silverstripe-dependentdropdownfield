@@ -61,7 +61,14 @@ class DependentDropdownField extends DropdownField {
 			return parent::getSource();
 		}
 
-		if(!$val = $this->depends->Value()) {
+		$val = $this->depends->Value();
+
+		if(!$val && !$this->depends->getHasEmptyDefault()) {
+			$dependsSource = array_keys($this->depends->getSource());
+			$val = isset($dependsSource[0]) ? $dependsSource[0] : null;
+		}
+
+		if(!$val) {
 			$source = array();
 		} else {
 			$source = call_user_func($this->source, $val);
