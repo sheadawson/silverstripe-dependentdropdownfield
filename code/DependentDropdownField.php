@@ -71,7 +71,7 @@ class DependentDropdownField extends DropdownField
 
         $val = $this->depends->Value();
 
-        if (!$val && !$this->depends->getHasEmptyDefault()) {
+        if (!$val && method_exists($this->depends, 'getHasEmptyDefault') && !$this->depends->getHasEmptyDefault()) {
             $dependsSource = array_keys($this->depends->getSource());
             $val = isset($dependsSource[0]) ? $dependsSource[0] : null;
         }
