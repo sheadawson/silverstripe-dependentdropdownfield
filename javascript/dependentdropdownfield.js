@@ -26,7 +26,7 @@ jQuery.entwine("dependentdropdown", function ($) {
 						$.each(data, function () {
 							drop.append($("<option />").val(this.k).text(this.v));
 						});
-						drop.trigger("liszt:updated");
+						drop.trigger("liszt:updated").trigger("chosen:updated");
 					});
 				}
 			});
@@ -36,7 +36,7 @@ jQuery.entwine("dependentdropdown", function ($) {
 			}
 		},
 		disable: function (text) {
-			this.empty().append($("<option />").val("").text(text)).attr("disabled", "disabled").trigger("liszt:updated");
+			this.empty().append($("<option />").val("").text(text)).attr("disabled", "disabled").trigger("liszt:updated").trigger("chosen:updated");
 		},
 		enable: function () {
 			this.empty().removeAttr("disabled").next().removeClass('chzn-disabled');
