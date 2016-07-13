@@ -1,5 +1,5 @@
 jQuery.entwine("dependentdropdown", function ($) {
-	
+
 	$(":input.dependent-dropdown").entwine({
 		onadd: function () {
 			var drop = this;
@@ -26,7 +26,7 @@ jQuery.entwine("dependentdropdown", function ($) {
 						$.each(data, function () {
 							drop.append($("<option />").val(this.k).text(this.v));
 						});
-						drop.trigger("liszt:updated").trigger("chosen:updated");
+						drop.trigger("liszt:updated").trigger("chosen:updated").trigger("change");
 					});
 				}
 			});
