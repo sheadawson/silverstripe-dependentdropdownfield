@@ -1,7 +1,7 @@
 jQuery.entwine("dependentdropdown", function ($) {
 
 	$(":input.dependent-dropdown").entwine({
-		onadd: function () {
+		onmatch: function () {
 			var drop = this;
 			var depends = ($(":input[name=" + drop.data('depends').replace(/[#;&,.+*~':"!^$[\]()=>|\/]/g, "\\$&") + "]"));
 
