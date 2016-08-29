@@ -14,12 +14,12 @@ class DependentDropdownField extends DropdownField
 
     protected $depends;
     protected $unselected;
-    
-    
+
+
     public function __construct($name, $title = null, $source = array(), $value = '', $form = null, $emptyString = null)
     {
         parent::__construct($name, $title, $source, $value, $form, $emptyString);
-        
+
         $this->addExtraClass('dependent-dropdown');
         $this->addExtraClass('dropdown');
     }
@@ -28,7 +28,7 @@ class DependentDropdownField extends DropdownField
     {
         $response = new SS_HTTPResponse();
         $response->addHeader('Content-Type', 'application/json');
-        
+
         $items = call_user_func($this->source, $request->getVar('val'));
         $results = array();
         if ($items) {
@@ -36,7 +36,7 @@ class DependentDropdownField extends DropdownField
                 $results[] = array('k' => $k, 'v' => $v);
             }
         }
-        
+
         $response->setBody(Convert::array2json($results));
         return $response;
     }
@@ -80,6 +80,7 @@ class DependentDropdownField extends DropdownField
             $source = array();
         } else {
             $source = call_user_func($this->source, $val);
+            if($source instanceof SS_Map) $source = $source->toArray();
         }
 
         if ($this->getHasEmptyDefault()) {
