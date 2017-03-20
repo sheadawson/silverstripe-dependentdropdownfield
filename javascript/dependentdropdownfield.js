@@ -1,7 +1,7 @@
 jQuery.entwine("dependentdropdown", function ($) {
-	
+
 	$(":input.dependent-dropdown").entwine({
-		onadd: function () {
+		onmatch: function () {
 			var drop = this;
 			var depends = ($(":input[name=" + drop.data('depends').replace(/[#;&,.+*~':"!^$[\]()=>|\/]/g, "\\$&") + "]"));
 
@@ -26,7 +26,7 @@ jQuery.entwine("dependentdropdown", function ($) {
 						$.each(data, function () {
 							drop.append($("<option />").val(this.k).text(this.v));
 						});
-						drop.trigger("liszt:updated").trigger("chosen:updated");
+						drop.trigger("liszt:updated").trigger("chosen:updated").trigger("change");
 					});
 				}
 			});
