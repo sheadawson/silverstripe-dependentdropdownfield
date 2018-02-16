@@ -1,14 +1,39 @@
 {
-	"name": "sheadawson/silverstripe-dependentdropdownfield",
-	"type": "silverstripe-module",
-	"description": "A silverstripe dropdown field that has it's options populated via ajax, based on the value of the field it depends on",
-	"require": {
-		"php": ">=5.3.2",
-		"silverstripe/cms": "3.*",
-		"silverstripe/framework": "3.*"
-	},
-	"extra": {
-		"installer-name": "dependentdropdownfield"
-	},
-	"minimum-stability": "dev"
+    "name": "sheadawson/silverstripe-dependentdropdownfield",
+    "type": "silverstripe-vendormodule",
+    "description": "A silverstripe dropdown field that has it's options populated via ajax, based on the value of the field it depends on",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "silverstripe",
+        "dropdown"
+    ],
+    "homepage": "https://github.com/sheadawson/silverstripe-dependentdropdownfield",
+    "support": {
+        "issues": "https://github.com/sheadawson/silverstripe-dependentdropdownfield/issues"
+    },
+    "require": {
+        "php": ">=5.6",
+        "silverstripe/vendor-plugin": "^1.0",
+        "silverstripe/framework": "^4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sheadawson\\DependentDropdown\\": "src/",
+            "Sheadawson\\DependentDropdown\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "installer-name": "dependentdropdownfield",
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        },
+        "expose": [
+            "client"
+        ]
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }
