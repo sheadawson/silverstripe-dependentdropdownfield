@@ -4,7 +4,7 @@ A SilverStripe dropdown field that has it's options populated via ajax, based on
 
 ##Requirements
 
-SilverStripe 3
+SilverStripe 4
 
 ##Usage example
 
@@ -23,7 +23,7 @@ $datesSource = function($val) {
 
 $fields = FieldList::create(
 	// 2. Add your first field to your field list, 
-	$fieldOne = DropdownField::create('FieldOne', 'Field One', array('one' => 'One', 'two' => 'Two')),
+	$fieldOne = DropdownField::create('FieldOne', 'Field One', ['one' => 'One', 'two' => 'Two']),
 	// 3. Add your DependentDropdownField, setting the source as the callable function 
 	// you created and setting the field it depends on to the appropriate field
 	DependentDropdownField::create('FieldTwo', 'Field Two', $datesSource)->setDepends($fieldOne)
