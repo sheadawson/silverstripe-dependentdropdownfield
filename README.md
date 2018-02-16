@@ -1,12 +1,12 @@
-#silverstripe-dependentdropdownfield
+# silverstripe-dependentdropdownfield
 
 A SilverStripe dropdown field that has it's options populated via ajax, based on the value of the field it depends on.
 
-##Requirements
+## Requirements
 
 SilverStripe 4
 
-##Usage example
+## Usage example
 
 ```php
 // 1. Create a callable function that returns an array of options for the DependentDropdownField. 
