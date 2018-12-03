@@ -36,7 +36,7 @@ jQuery.entwine("dependentdropdown", function ($) {
 			}
 		},
 		disable: function (text) {
-			this.empty().append($("<option />").val("").text(text)).attr("disabled", "disabled").trigger("liszt:updated").trigger("chosen:updated");
+			this.empty().append($("<option />").val("").text(text)).attr("disabled", "disabled").trigger("liszt:updated").trigger("chosen:updated").trigger("change");
 		},
 		enable: function () {
 			this.empty().removeAttr("disabled").next().removeClass('chzn-disabled');
