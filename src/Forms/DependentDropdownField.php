@@ -153,6 +153,10 @@ class DependentDropdownField extends DropdownField
         }
     }
     
+     /**
+     * @param \Closure $source
+     * @return $this
+     */
     public function setSource($source)
     {
         $this->sourceCallback = $source;
