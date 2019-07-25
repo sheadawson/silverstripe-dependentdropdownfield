@@ -50,7 +50,7 @@ class DependentDropdownField extends DropdownField
      * @param $form
      * @param string $emptyString
      */
-    public function __construct($name, $title = null, \Closure $source, $value = '', $form = null, $emptyString = null)
+    public function __construct($name, $title = null, \Closure $source = null, $value = '', $form = null, $emptyString = null)
     {
         parent::__construct($name, $title, [], $value, $form, $emptyString);
 
@@ -151,6 +151,16 @@ class DependentDropdownField extends DropdownField
         } else {
             return $source;
         }
+    }
+    
+     /**
+     * @param \Closure $source
+     * @return $this
+     */
+    public function setSource($source)
+    {
+        $this->sourceCallback = $source;
+        return $this;
     }
 
     /**
