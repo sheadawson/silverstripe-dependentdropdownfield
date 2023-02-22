@@ -6,7 +6,6 @@ use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Control\HTTPResponse;
-use SilverStripe\Core\Convert;
 use SilverStripe\ORM\Map;
 use SilverStripe\View\Requirements;
 use SilverStripe\Forms\FormField;
@@ -80,7 +79,7 @@ class DependentDropdownField extends DropdownField
             }
         }
 
-        $response->setBody(Convert::array2json($results));
+        $response->setBody(json_encode($results));
 
         return $response;
     }
@@ -154,7 +153,7 @@ class DependentDropdownField extends DropdownField
             return $source;
         }
     }
-    
+
      /**
      * @param \Closure $source
      * @return $this
@@ -174,7 +173,7 @@ class DependentDropdownField extends DropdownField
         if (!is_subclass_of(Controller::curr(), LeftAndMain::class)) {
             Requirements::javascript('silverstripe/admin:thirdparty/jquery-entwine/dist/jquery.entwine-dist.js');
         }
-        
+
         Requirements::javascript(
             'sheadawson/silverstripe-dependentdropdownfield:client/js/dependentdropdownfield.js'
         );
