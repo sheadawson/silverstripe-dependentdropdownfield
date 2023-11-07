@@ -4,19 +4,19 @@ namespace Sheadawson\DependentDropdown\Forms;
 
 use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\Controller;
-use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\ListboxField;
 use SilverStripe\ORM\Map;
 use SilverStripe\View\Requirements;
 
 /**
- * Class DependentDropdownField
+ * Class DependentListboxField
  *
  * A dropdown that depends on another dropdown for populating values, and calls
  * a callback when that dropdown is updated.
  *
  * @package SilverStripe\Forms
  */
-class DependentDropdownField extends DropdownField
+class DependentListboxField extends ListboxField
 {
     use DependentFieldTrait;
 
@@ -25,13 +25,12 @@ class DependentDropdownField extends DropdownField
      * @param string $name
      * @param string $title
      * @param \Closure $source
-     * @param string $value
-     * @param $form
-     * @param string $emptyString
+     * @param string|array|null $value
+     * @param int $size
      */
-    public function __construct($name, $title = null, \Closure $source = null, $value = '', $form = null, $emptyString = null)
+    public function __construct($name, $title = null, \Closure $source = null, $value = null, $size = null)
     {
-        parent::__construct($name, $title, [], $value, $form, $emptyString);
+        parent::__construct($name, $title, [], $value, $size);
 
         // we are unable to store Closure as a normal source
         $this->sourceCallback = $source;
@@ -65,11 +64,7 @@ class DependentDropdownField extends DropdownField
             }
         }
 
-        if ($this->getHasEmptyDefault()) {
-            return ['' => $this->getEmptyString()] + (array) $source;
-        } else {
-            return $source;
-        }
+        return $source;
     }
 
     /**
@@ -88,7 +83,6 @@ class DependentDropdownField extends DropdownField
 
         $this->setAttribute('data-link', $this->Link('load'));
         $this->setAttribute('data-depends', $this->getDepends()->getName());
-        $this->setAttribute('data-empty', $this->getEmptyString());
         $this->setAttribute('data-unselected', $this->getUnselectedString());
 
         return parent::Field($properties);

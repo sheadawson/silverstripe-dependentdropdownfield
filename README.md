@@ -35,3 +35,5 @@ $fields = FieldList::create(
 	DependentDropdownField::create('FieldTwo', 'Field Two', $datesSource)->setDepends($fieldOne)
 );
 ```
+
+You can also create a ListboxField with `DependentListboxField`.
