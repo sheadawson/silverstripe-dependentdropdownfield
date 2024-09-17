@@ -3,9 +3,42 @@ jQuery.entwine("dependentdropdown", function ($) {
 	$(":input.dependent-dropdown").entwine({
 		onmatch: function () {
 			var drop = this;
-			var depends = ($(":input[name=" + drop.data('depends').replace(/[#;&,.+*~':"!^$[\]()=>|\/]/g, "\\$&") + "]"));
+            var fieldName = drop.data('depends').replace(/[#;&,.+*~':"!^$[\]()=>|\/]/g, "\\$&");
+            var depends = ($(":input[name=" + fieldName + "]"));
+            var dependsTreedropdownfield = ($(".TreeDropdownField[id$=" + fieldName + "]"));
 
-			this.parents('.field:first').addClass('dropdown');
+            this.parents('.field:first').addClass('dropdown');
+
+            if (dependsTreedropdownfield.length) {
+                dependsTreedropdownfield.on('change', function (e) {
+                    var newValue = $(":input[name=" + fieldName + "]").val();
+
+                    // if the new value is not set, set it as disabled
+                    if (!newValue) {
+                        drop.disable(drop.data('unselected'));
+                        return;
+                    }
+
+                    drop.disable("Loading...");
+                    $.get(
+                        drop.data('link'),
+                        { val: newValue },
+                        function (data) {
+                            drop.enable();
+                            if (drop.data('empty') || drop.data('empty') === "") {
+                                drop.append($("<option />").val("").text(drop.data('empty')));
+                            }
+
+                            $.each(data, function () {
+                                drop.append($("<option />").val(this.k).text(this.v));
+                            });
+                            drop.trigger("liszt:updated").trigger("chosen:updated").trigger("change");
+                        }
+                    );
+                });
+
+                return;
+            }
 
 			depends.change(function () {
 				if (!this.value) {
