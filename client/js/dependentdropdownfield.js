@@ -1,3 +1,4 @@
+
 jQuery.entwine("dependentdropdown", function ($) {
 
 	$(":input.dependent-dropdown").entwine({
@@ -5,13 +6,14 @@ jQuery.entwine("dependentdropdown", function ($) {
 			var drop = this;
             var fieldName = drop.data('depends').replace(/[#;&,.+*~':"!^$[\]()=>|\/]/g, "\\$&");
             var depends = ($(":input[name=" + fieldName + "]"));
-            var dependsTreedropdownfield = ($(".TreeDropdownField[id$=" + fieldName + "]"));
+            var dependsTreedropdownfield = ($(".listbox[id$=" + fieldName + "]"));
 
             this.parents('.field:first').addClass('dropdown');
 
             if (dependsTreedropdownfield.length) {
                 dependsTreedropdownfield.on('change', function (e) {
-                    var newValue = $(":input[name=" + fieldName + "]").val();
+                    var newValue = dependsTreedropdownfield.val();
+                    var selectedValuesArray = drop.val();
 
                     // if the new value is not set, set it as disabled
                     if (!newValue) {
@@ -22,15 +24,23 @@ jQuery.entwine("dependentdropdown", function ($) {
                     drop.disable("Loading...");
                     $.get(
                         drop.data('link'),
-                        { val: newValue },
+                        {
+                            val: newValue,
+                            selectedValues: selectedValuesArray,
+                         },
                         function (data) {
+                            if (data.length === 0) {
+                                var chosenDropdown = $("[id$=" + drop.attr('id') + "]");
+                                chosenDropdown.addClass('chosen-disabled')
+                            }
+
                             drop.enable();
                             if (drop.data('empty') || drop.data('empty') === "") {
                                 drop.append($("<option />").val("").text(drop.data('empty')));
                             }
 
                             $.each(data, function () {
-                                drop.append($("<option />").val(this.k).text(this.v));
+                                drop.append($("<option />").val(this.k).text(this.v).prop('selected', this.s));
                             });
                             drop.trigger("liszt:updated").trigger("chosen:updated").trigger("change");
                         }

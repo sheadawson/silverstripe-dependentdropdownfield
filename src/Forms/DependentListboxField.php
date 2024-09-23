@@ -56,7 +56,7 @@ class DependentListboxField extends ListboxField
         if (!$val) {
             $source = [];
         } else {
-            $source = call_user_func($this->sourceCallback, $val);
+            $source = call_user_func($this->sourceCallback, $val, $this->Value());
             if ($source instanceof Map) {
                 $source = $source->toArray();
             }
