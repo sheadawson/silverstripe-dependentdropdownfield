@@ -3,6 +3,7 @@
 namespace Sheadawson\DependentDropdown\Traits;
 
 use SilverStripe\Control\HTTPResponse;
+use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\FormField;
 
 trait DependentFieldTrait {
@@ -36,12 +37,14 @@ trait DependentFieldTrait {
     {
         $response = new HTTPResponse();
         $response->addHeader('Content-Type', 'application/json');
+        $newValue = $request->getVar('val');
+        $selectedValues = $request->getVar('selectedValues') ?? [];
 
-        $items = call_user_func($this->sourceCallback, $request->getVar('val'));
+        $items = call_user_func($this->sourceCallback, $newValue);
         $results = [];
         if ($items) {
             foreach ($items as $k => $v) {
-                $results[] = ['k' => $k, 'v' => $v];
+                $results[] = ['k' => $k, 'v' => $v, 's' => in_array($k, $selectedValues)];
             }
         }
 
