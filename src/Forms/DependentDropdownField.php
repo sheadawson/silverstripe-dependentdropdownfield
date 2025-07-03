@@ -2,40 +2,39 @@
 
 namespace Sheadawson\DependentDropdown\Forms;
 
+use Closure;
+use Sheadawson\DependentDropdown\Traits\DependentFieldTrait;
 use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\View\Requirements;
-use Sheadawson\DependentDropdown\Traits\DependentFieldTrait;
 
 /**
- * Class DependentDropdownField
+ * Class DependentDropdownField.
  *
  * A dropdown that depends on another dropdown for populating values, and calls
  * a callback when that dropdown is updated.
- *
- * @package SilverStripe\Forms
  */
 class DependentDropdownField extends DropdownField
 {
-
     use DependentFieldTrait;
 
     /**
      * DependentDropdownField constructor.
+     *
      * @param string $name
      * @param string $title
-     * @param \Closure $source
+     * @param Closure $source
      * @param string $value
-     * @param $form
+     * @param         $form
      * @param string $emptyString
      */
-    public function __construct($name, $title = null, \Closure $source = null, $value = '', $form = null, $emptyString = null)
+    public function __construct($name, $title = null, ?Closure $source = null, $value = '', $form = null, $emptyString = null)
     {
         parent::__construct($name, $title, [], $value, $form, $emptyString);
 
         // we are unable to store Closure as a normal source
-        $this->sourceCallback = $source;
+        $this->setSourceCallback($source);
         $this
             ->addExtraClass('dependent-dropdown')
             ->addExtraClass('dropdown');
@@ -43,6 +42,7 @@ class DependentDropdownField extends DropdownField
 
     /**
      * @param array $properties
+     *
      * @return string
      */
     public function Field($properties = [])
