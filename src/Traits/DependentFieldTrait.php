@@ -2,38 +2,32 @@
 
 namespace Sheadawson\DependentDropdown\Traits;
 
+use ArrayAccess;
+use Closure;
+use JsonException;
+use Psr\Log\LoggerInterface;
+use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
+use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\FormField;
-use SilverStripe\ORM\Map;
+use SilverStripe\Model\List\Map;
 
-trait DependentFieldTrait {
+trait DependentFieldTrait
+{
+    protected ?FormField $depends;
+
+    protected string $unselected = '';
+
+    protected ?Closure $sourceCallback;
+
     /**
-     * @var array
+     * @config
      */
-    private static $allowed_actions = [
+    private static array $allowed_actions = [
         'load',
     ];
 
-    /**
-     * @var
-     */
-    protected $depends;
-
-    /**
-     * @var
-     */
-    protected $unselected;
-
-    /**
-     * @var \Closure
-     */
-    protected $sourceCallback;
-
-    /**
-     * @param $request
-     * @return HTTPResponse
-     */
-    public function load($request)
+    public function load(HTTPRequest $request): HTTPResponse
     {
         $response = new HTTPResponse();
         $response->addHeader('Content-Type', 'application/json');
@@ -44,28 +38,28 @@ trait DependentFieldTrait {
         $results = [];
         if ($items) {
             foreach ($items as $k => $v) {
-                $results[] = ['k' => $k, 'v' => $v, 's' => in_array($k, $selectedValues)];
+                $results[] = ['k' => $k, 'v' => $v, 's' => in_array($k, $selectedValues, true)];
             }
         }
 
-        $response->setBody(json_encode($results));
+        try {
+            $payload = json_encode($results, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            Injector::inst()->get(LoggerInterface::class)->error(
+                sprintf('%s: %s', __CLASS__, $e->getMessage())
+            );
+            $payload = sprintf('{"error": "%s"}', _t(__CLASS__.'.FETCH_ERROR', 'Failed to fetch dependent data.'));
+        }
 
-        return $response;
+        return $response->setBody($payload);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDepends()
+    public function getDepends(): FormField
     {
         return $this->depends;
     }
 
-    /**
-     * @param FormField $field
-     * @return $this
-     */
-    public function setDepends(FormField $field)
+    public function setDepends(FormField $field): self
     {
         $this->depends = $field;
 
@@ -75,38 +69,34 @@ trait DependentFieldTrait {
     /**
      * @return mixed
      */
-    public function getUnselectedString()
+    public function getUnselectedString(): string
     {
         return $this->unselected;
     }
 
-    /**
-     * @param $string
-     * @return $this
-     */
-    public function setUnselectedString($string)
+    public function setUnselectedString(?string $string): self
     {
         $this->unselected = $string;
 
         return $this;
     }
 
-     /**
-     * @param \Closure $source
-     * @return $this
+    /**
+     * {@inheritDoc}
      */
-    public function setSource($source)
+    public function setSourceCallback(?Closure $source): self
     {
         $this->sourceCallback = $source;
+
         return $this;
     }
 
     /**
-     * @return array|\ArrayAccess
+     * @return array|ArrayAccess
      */
     public function getSource()
     {
-        $val = $this->depends->Value();
+        $val = $this->depends->getValue();
 
         if (
             !$val
@@ -120,7 +110,7 @@ trait DependentFieldTrait {
         if (!$val) {
             $source = [];
         } else {
-            $source = call_user_func($this->sourceCallback, $val, $this->Value());
+            $source = call_user_func($this->sourceCallback, $val, $this->getValue());
             if ($source instanceof Map) {
                 $source = $source->toArray();
             }
@@ -128,5 +118,4 @@ trait DependentFieldTrait {
 
         return $source;
     }
-
 }
