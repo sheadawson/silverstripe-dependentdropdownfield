@@ -2,38 +2,29 @@
 
 namespace Sheadawson\DependentDropdown\Traits;
 
+use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\FormField;
 
 trait DependentFieldTrait {
     /**
-     * @var array
+     * @config
      */
-    private static $allowed_actions = [
+    private static array $allowed_actions = [
         'load',
     ];
 
-    /**
-     * @var
-     */
-    protected $depends;
+    protected ?FormField $depends;
+
+    protected string $unselected = '';
+
+    protected ?\Closure $sourceCallback;
 
     /**
-     * @var
+     * @throws \JsonException
      */
-    protected $unselected;
-
-    /**
-     * @var \Closure
-     */
-    protected $sourceCallback;
-
-    /**
-     * @param $request
-     * @return HTTPResponse
-     */
-    public function load($request)
+    public function load(HTTPRequest $request): HTTPResponse
     {
         $response = new HTTPResponse();
         $response->addHeader('Content-Type', 'application/json');
@@ -48,24 +39,17 @@ trait DependentFieldTrait {
             }
         }
 
-        $response->setBody(json_encode($results));
+        $response->setBody(json_encode($results, JSON_THROW_ON_ERROR));
 
         return $response;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDepends()
+    public function getDepends(): FormField
     {
         return $this->depends;
     }
 
-    /**
-     * @param FormField $field
-     * @return $this
-     */
-    public function setDepends(FormField $field)
+    public function setDepends(FormField $field): self
     {
         $this->depends = $field;
 
@@ -75,29 +59,25 @@ trait DependentFieldTrait {
     /**
      * @return mixed
      */
-    public function getUnselectedString()
+    public function getUnselectedString(): string
     {
         return $this->unselected;
     }
 
-    /**
-     * @param $string
-     * @return $this
-     */
-    public function setUnselectedString($string)
+    public function setUnselectedString(?string $string): self
     {
         $this->unselected = $string;
 
         return $this;
     }
 
-     /**
-     * @param \Closure $source
-     * @return $this
+    /**
+     * @inheritDoc
      */
     public function setSource($source)
     {
         $this->sourceCallback = $source;
+
         return $this;
     }
 }

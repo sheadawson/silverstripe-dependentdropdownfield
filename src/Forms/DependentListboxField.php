@@ -5,7 +5,7 @@ namespace Sheadawson\DependentDropdown\Forms;
 use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\ListboxField;
-use SilverStripe\ORM\Map;
+use SilverStripe\Model\List\Map;
 use SilverStripe\View\Requirements;
 use Sheadawson\DependentDropdown\Traits\DependentFieldTrait;
 
