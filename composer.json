@@ -12,12 +12,12 @@
         "issues": "https://github.com/sheadawson/silverstripe-dependentdropdownfield/issues"
     },
     "require": {
-        "php": ">=7.4",
-        "silverstripe/vendor-plugin": "^1 || ^2",
-        "silverstripe/framework": "^4.11 || ^5"
+        "php": "^8.3",
+        "silverstripe/vendor-plugin": "^3",
+        "silverstripe/admin": "^3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^11.5"
     },
     "autoload": {
         "psr-4": {
@@ -28,7 +28,7 @@
     "extra": {
         "installer-name": "dependentdropdownfield",
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "dev-master": "4.0.x-dev"
         },
         "expose": [
             "client"
