@@ -3,8 +3,8 @@
 namespace Sheadawson\DependentDropdown\Traits;
 
 use SilverStripe\Control\HTTPResponse;
-use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\FormField;
+use SilverStripe\ORM\Map;
 
 trait DependentFieldTrait {
     /**
@@ -100,4 +100,33 @@ trait DependentFieldTrait {
         $this->sourceCallback = $source;
         return $this;
     }
+
+    /**
+     * @return array|\ArrayAccess
+     */
+    public function getSource()
+    {
+        $val = $this->depends->Value();
+
+        if (
+            !$val
+            && method_exists($this->depends, 'getHasEmptyDefault')
+            && !$this->depends->getHasEmptyDefault()
+        ) {
+            $dependsSource = array_keys($this->depends->getSource());
+            $val = isset($dependsSource[0]) ? $dependsSource[0] : null;
+        }
+
+        if (!$val) {
+            $source = [];
+        } else {
+            $source = call_user_func($this->sourceCallback, $val, $this->Value());
+            if ($source instanceof Map) {
+                $source = $source->toArray();
+            }
+        }
+
+        return $source;
+    }
+
 }

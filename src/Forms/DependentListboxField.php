@@ -5,7 +5,6 @@ namespace Sheadawson\DependentDropdown\Forms;
 use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\ListboxField;
-use SilverStripe\ORM\Map;
 use SilverStripe\View\Requirements;
 use Sheadawson\DependentDropdown\Traits\DependentFieldTrait;
 
@@ -35,34 +34,6 @@ class DependentListboxField extends ListboxField
             ->addExtraClass('dependent-dropdown')
             ->addExtraClass('listbox')
             ->addExtraClass('dropdown');
-    }
-
-    /**
-     * @return array|\ArrayAccess|mixed
-     */
-    public function getSource()
-    {
-        $val = $this->depends->Value();
-
-        if (
-            !$val
-            && method_exists($this->depends, 'getHasEmptyDefault')
-            && !$this->depends->getHasEmptyDefault()
-        ) {
-            $dependsSource = array_keys($this->depends->getSource());
-            $val = isset($dependsSource[0]) ? $dependsSource[0] : null;
-        }
-
-        if (!$val) {
-            $source = [];
-        } else {
-            $source = call_user_func($this->sourceCallback, $val, $this->Value());
-            if ($source instanceof Map) {
-                $source = $source->toArray();
-            }
-        }
-
-        return $source;
     }
 
     /**
