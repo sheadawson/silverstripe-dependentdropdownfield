@@ -2,34 +2,32 @@
 
 namespace Sheadawson\DependentDropdown\Forms;
 
+use Closure;
+use Sheadawson\DependentDropdown\Traits\DependentFieldTrait;
 use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\Controller;
 use SilverStripe\Forms\ListboxField;
 use SilverStripe\View\Requirements;
-use Sheadawson\DependentDropdown\Traits\DependentFieldTrait;
 
-/**
- *
- * @package SilverStripe\Forms
- */
 class DependentListboxField extends ListboxField
 {
     use DependentFieldTrait;
 
     /**
      * DependentDropdownField constructor.
+     *
      * @param string $name
      * @param string $title
-     * @param \Closure $source
-     * @param string|array|null $value
+     * @param Closure $source
+     * @param null|array|string $value
      * @param int $size
      */
-    public function __construct($name, $title = null, \Closure $source = null, $value = null, $size = null)
+    public function __construct($name, $title = null, ?Closure $source = null, $value = null, $size = null)
     {
         parent::__construct($name, $title, [], $value, $size);
 
         // we are unable to store Closure as a normal source
-        $this->sourceCallback = $source;
+        $this->setSourceCallback($source);
         $this
             ->addExtraClass('dependent-dropdown')
             ->addExtraClass('listbox')
@@ -38,6 +36,7 @@ class DependentListboxField extends ListboxField
 
     /**
      * @param array $properties
+     *
      * @return string
      */
     public function Field($properties = [])
